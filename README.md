@@ -3,4 +3,4 @@
 
 - Through this course, there will be implemented functionalities, animations, lazy loading images, etc.
 
-The section is elaborating the advanced DOM concepts and events.
+The section of the course is elaborating the advanced DOM concepts and events.
