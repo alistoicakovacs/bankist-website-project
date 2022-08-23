@@ -99,3 +99,38 @@ logo.classList.contains('c');
 //////////////////////////////////////
 
 // Implementing Smooth Scrolling
+
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+
+btnScrollTo.addEventListener('click', function (e) {
+  const s1coords = section1.getBoundingClientRect();
+  console.log(s1coords);
+
+  console.log(e.target.getBoundingClientRect());
+
+  // this logs to the console the current scroll in pixels - the distance between current position and top of the page
+  console.log('Current scroll (x/y):', window.pageXOffset, window.pageYOffset);
+
+  // logs to the console the height and width of the viewport of the current proportion of the page
+  console.log(
+    'height/width viewport:',
+    document.documentElement.clientHeight,
+    document.documentElement.clientWidth
+  );
+
+  // Scrolling
+  // Global function available on the window object
+  // window.scrollTo(
+  //   // Current position + current scroll
+  //   s1coords.left + window.pageXOffset,
+  //   s1coords.top + window.pageYOffset
+  // );
+
+  // here we pass an object instead of an argument
+  window.scrollTo({
+    left: s1coords.left + window.pageXOffset,
+    top: s1coords.top + window.pageYOffset,
+    behavior: 'smooth',
+  });
+});
