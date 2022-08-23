@@ -139,3 +139,23 @@ btnScrollTo.addEventListener('click', function (e) {
   // this only works in the modern browsers
   section1.scrollIntoView({ behavior: 'smooth' });
 });
+
+const h1 = document.querySelector('h1');
+const alerth1 = function (e) {
+  alert('addEventListener: Great! You are reading the heading!');
+
+  // on the second hover, the alert is not going to show.
+  // this is a good method to be used whenever you only want to listen to an event once.
+  // h1.removeEventListener('mouseenter', alerth1);
+};
+
+// mouseover is an event like :hover in css. It does something on hover
+h1.addEventListener('mouseenter', alerth1);
+
+// setTimeout(() => h1.removeEventListener('mouseenter', alerth1), 3000);
+// onevent property can be used directly on the element - setting the function directly to the element
+// h1.onmouseenter = function (e) {
+//   alert('addEventListener: Great! You are reading the heading!');
+// };
+
+// removing an event handler
