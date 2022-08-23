@@ -128,9 +128,14 @@ btnScrollTo.addEventListener('click', function (e) {
   // );
 
   // here we pass an object instead of an argument
-  window.scrollTo({
-    left: s1coords.left + window.pageXOffset,
-    top: s1coords.top + window.pageYOffset,
-    behavior: 'smooth',
-  });
+  // window.scrollTo({
+  //   left: s1coords.left + window.pageXOffset,
+  //   top: s1coords.top + window.pageYOffset,
+  //   behavior: 'smooth',
+  // });
+
+  // there is another new way of doing this:
+  // we pass in where we want to scroll to, and on that we call scrollIntoView(), and then we pass in an object and we specify the behavior
+  // this only works in the modern browsers
+  section1.scrollIntoView({ behavior: 'smooth' });
 });
