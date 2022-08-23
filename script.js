@@ -36,10 +36,8 @@ document.addEventListener('keydown', function (e) {
 ////////////////////
 const header = document.querySelector('.header');
 const allSections = document.querySelectorAll('.section');
-console.log(allSections);
 
 const allButtons = document.getElementsByTagName('button');
-console.log(allButtons);
 
 const message = document.createElement('div');
 message.classList.add('cookie-message');
@@ -57,3 +55,43 @@ document
     //old way
     message.parentElement.removeChild(message);
   });
+
+message.style.backgroundColor = '#37383d';
+message.style.width = '120%';
+
+message.style.height =
+  Number.parseFloat(getComputedStyle(message).height, 10) + 30 + 'px';
+
+document.documentElement.style.setProperty('--color-primary', 'orangered');
+
+// Attributes
+
+const logo = document.querySelector('.nav__logo');
+
+console.log(logo.alt);
+
+// this changes the alt of the logo. Any attribute can be changed like this
+logo.alt = 'beautiful logo';
+
+const link = document.querySelector('.twitter-link');
+
+console.log(link.href);
+
+// Data attributes
+// data style of attributes that start with data
+console.log(logo.dataset.versionNumber);
+
+// Classes
+// You can also add multiple classes, by passing in multiple values
+
+// adds class
+logo.classList.add('c');
+// removes class/es
+logo.classList.remove('c', 's');
+// toggles classes. When it returns true, it switches to false, and if it is false, it switches to true
+logo.classList.toggle('c');
+// check if
+logo.classList.contains('c');
+
+// don't use
+// logo.className = 'ali'
