@@ -95,3 +95,7 @@ logo.classList.contains('c');
 
 // don't use
 // logo.className = 'ali'
+
+//////////////////////////////////////
+
+// Implementing Smooth Scrolling
