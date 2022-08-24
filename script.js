@@ -62,8 +62,6 @@ message.style.width = '120%';
 message.style.height =
   Number.parseFloat(getComputedStyle(message).height, 10) + 30 + 'px';
 
-document.documentElement.style.setProperty('--color-primary', 'orangered');
-
 // Attributes
 
 const logo = document.querySelector('.nav__logo');
@@ -75,11 +73,11 @@ logo.alt = 'beautiful logo';
 
 const link = document.querySelector('.twitter-link');
 
-console.log(link.href);
+// console.log(link.href);
 
 // Data attributes
 // data style of attributes that start with data
-console.log(logo.dataset.versionNumber);
+// console.log(logo.dataset.versionNumber);
 
 // Classes
 // You can also add multiple classes, by passing in multiple values
@@ -139,24 +137,90 @@ btnScrollTo.addEventListener('click', function (e) {
   // this only works in the modern browsers
   section1.scrollIntoView({ behavior: 'smooth' });
 });
+/////////////////////////////////////
+// Page Navigation
+// document.querySelectorAll('.nav__link').forEach(function (el) {
+//   el.addEventListener('click', function (e) {
+//     // this e.preventDefault function stops the page from jumping to the id section - anchor
+//     e.preventDefault();
+//     const id = this.getAttribute('href');
+//     console.log(id);
+//     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+//   });
+// });
+
+////////////////////////////////////////////
+// 1. Add event listener to common parent element
+// 2. Determine what element originated the event
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  e.preventDefault();
+  ////////////////////////////////////////
+  // Matching strategy
+  if (e.target.classList.contains('nav__link')) {
+    const id = e.target.getAttribute('href');
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
+  // we added one big event function to the parent element
+  // then we simply determined where the click event came from
+  // we also had to make sure we ignored clicks that are not on the links
+});
+
+/////////////////////////////
 
 const h1 = document.querySelector('h1');
 const alerth1 = function (e) {
-  alert('addEventListener: Great! You are reading the heading!');
-
+  // alert('addEventListener: Great! You are reading the heading!');
   // removing an event handler
-
   // on the second hover, the alert is not going to show.
   // this is a good method to be used whenever you only want to listen to an event once.
-
   // h1.removeEventListener('mouseenter', alerth1);
 };
 
 // mouseover is an event like :hover in css. It does something on hover
-h1.addEventListener('mouseenter', alerth1);
+// h1.addEventListener('mouseenter', alerth1);
 
 // setTimeout(() => h1.removeEventListener('mouseenter', alerth1), 3000);
 // onevent property can be used directly on the element - setting the function directly to the element
 // h1.onmouseenter = function (e) {
 //   alert('addEventListener: Great! You are reading the heading!');
 // };
+
+//////////////////////////////////////
+// Event Propagation: Bubbling and Capturing
+
+// rgb (255,255,255)
+// Random integer function
+const randomInt = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
+
+// Random color function
+const randomColor = () =>
+  `rgb(${randomInt(0, 255)}),rgb(${randomInt(0, 255)}),rgb(${randomInt(
+    0,
+    255
+  )})`;
+
+// document.querySelector('.nav__link').addEventListener('click', function (e) {
+//   console.log('link');
+//   this.style.backgroundColor = randomColor();
+//stopping the propagation faze - the bubbling event stops going outwards to the parent element
+//  e.stopPropagation();
+// });
+
+// document.querySelector('.nav__links').addEventListener('click', function (e) {
+//   console.log('link');
+//   this.style.backgroundColor = randomColor();
+// });
+
+// document.querySelector('.nav').addEventListener('click', function (e) {
+//   console.log('link');
+//   this.style.backgroundColor = randomColor();
+// });
+
+// Event bubbling goes outwards, from child to parent to parent up to the document element.
+
+// Bubbling and Capturing Event are two different things
+// Capturing events are travelling from parent to child - the opposite way as bubbling
+// Capturing is not often used
+
+// Event Delegation: implementing page navigation
