@@ -66,10 +66,10 @@ message.style.height =
 
 const logo = document.querySelector('.nav__logo');
 
-console.log(logo.alt);
+// console.log(logo.alt);
 
 // this changes the alt of the logo. Any attribute can be changed like this
-logo.alt = 'beautiful logo';
+// logo.alt = 'beautiful logo';
 
 const link = document.querySelector('.twitter-link');
 
@@ -138,6 +138,7 @@ btnScrollTo.addEventListener('click', function (e) {
   section1.scrollIntoView({ behavior: 'smooth' });
 });
 /////////////////////////////////////
+// Event Delegation: implementing page navigation
 // Page Navigation
 // document.querySelectorAll('.nav__link').forEach(function (el) {
 //   el.addEventListener('click', function (e) {
@@ -223,4 +224,67 @@ const randomColor = () =>
 // Capturing events are travelling from parent to child - the opposite way as bubbling
 // Capturing is not often used
 
-// Event Delegation: implementing page navigation
+////////////////////////////////
+// DOM Traversing
+// Going down wards
+// console.log(h1.querySelectorAll('.highlight'));
+// console.log(h1.childNodes);
+// console.log(h1.children);
+// h1.firstElementChild.color = "white"
+// -> changes first child color
+// this is how the first child can be selected
+
+//Going upwards: parents
+// console.log(h1.parentNode);
+// console.log(h1.parentElement);
+
+// h1.closest('.header').style.background = 'var(--gradient-secondary)';
+// this changes the background color of the closest header to the h1 element - closest parent elmenet that has the class mentioned
+// querySelector finds children, and closes() finds parents
+
+// Going sideways: siblings
+// console.log(h1.previousElementSibling);
+// console.log(h1.nextElementSibling);
+
+// console.log(h1.previousSibling);
+// console.log(h1.nextSibling);
+
+// console.log(h1.parentElement.children);
+// [...h1.parentElement.children].forEach(function (el) {
+//   if (el != h1) el.style.transform = 'scale(0.5)';
+// });
+
+//////////////////////////
+// Building a Tabbed Component
+
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+
+// tabs.forEach(t => t.addEventListener('click', () => console.log('tab')));
+
+tabsContainer.addEventListener('click', function (e) {
+  // determine the clicked element and assign it to a variable
+  const clicked = e.target.closest('.operations__tab');
+  // console.log(clicked);
+
+  // Guard clause
+  // Whenever there is no clicked element we want to simply return the function right away
+  if (!clicked) return;
+
+  // Remove active classes
+  // before we add the class to an element, we remove it
+  tabs.forEach(t => t.classList.remove('operations__tab--active'));
+  tabsContent.forEach(tabs =>
+    tabs.classList.remove('operations__content--active')
+  );
+
+  // Active tab
+  // add the active class to the clicked element
+  clicked.classList.add('operations__tab--active');
+
+  //Activate content area
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active');
+});
