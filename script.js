@@ -39,13 +39,13 @@ const allSections = document.querySelectorAll('.section');
 
 const allButtons = document.getElementsByTagName('button');
 
-const message = document.createElement('div');
-message.classList.add('cookie-message');
-message.textContent =
-  'We use cookies for improved functionality and analytics.';
-message.innerHTML =
-  'We use cookies for improved functionality and analytics. <button class ="btn btn--close-cookie">Got it!</button>';
-header.append(message);
+// const message = document.createElement('div');
+// message.classList.add('cookie-message');
+// message.textContent =
+//   'We use cookies for improved functionality and analytics.';
+// message.innerHTML =
+//   'We use cookies for improved functionality and analytics. <button class ="btn btn--close-cookie">Got it!</button>';
+// header.append(message);
 
 document
   .querySelector('.btn--close-cookie')
@@ -288,3 +288,116 @@ tabsContainer.addEventListener('click', function (e) {
     .querySelector(`.operations__content--${clicked.dataset.tab}`)
     .classList.add('operations__content--active');
 });
+
+/////////////////////////////////////////////
+// Passing arguments to event handlers
+
+//Menu fade animation
+
+const handleHover = function (e, opacity) {
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target;
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    const logo = link.closest('.nav').querySelector('img');
+
+    siblings.forEach(el => {
+      if (el != link) el.style.opacity = opacity;
+    });
+    logo.style.opacity = opacity;
+  }
+};
+
+const nav = document.querySelector('.nav');
+
+// another way of doing this is with the bind method
+// passing an argument into handler
+// nav.addEventListener('mouseover', handleHover.bind(0))
+nav.addEventListener('mouseover', function (e) {
+  // callback function - the function that we created earlier, with passed in arguments
+  handleHover(e, 0.5);
+  // this could also be made with the bind method, as it returns a new function
+});
+// if (e.target.classList.contains('nav__link')) {
+//   const link = e.target;
+//   const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+//   const logo = link.closest('.nav').querySelector('img');
+
+//   siblings.forEach(el => {
+//     if (el != link) el.style.opacity = 0.5;
+//   });
+//   logo.style.opacity = 0.5;
+// }
+
+// another way of doing this is with the bind method
+// passing an argument into handler
+// nav.addEventListener('mouseover', handleHover.bind(1))
+nav.addEventListener('mouseout', function (e) {
+  handleHover(e, 1);
+});
+// if (e.target.classList.contains('nav__link')) {
+//   const link = e.target;
+//   const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+//   const logo = link.closest('.nav').querySelector('img');
+
+//   siblings.forEach(el => {
+//     if (el != link) el.style.opacity = 1;
+//   });
+//   logo.style.opacity = 1;
+// }
+
+//////////////////////////////////
+// Implementing a sticky navigation - The Scroll Event
+
+// Sticky navigation
+// const initialCoords = section1.getBoundingClientRect();
+// console.log(initialCoords);
+// // this event will be fired each time we are scrolling the page
+// window.addEventListener('scroll', function () {
+//   console.log(window.scrollY);
+//   if (window.scrollY > initialCoords.top) nav.classList.add('sticky');
+//   else nav.classList.remove('sticky');
+// });
+
+/////////////////////
+// Sticky navigation:
+// Intersection Observer API
+
+// const obsCalback = function (entries, observer) {
+//   //whenever the first section is interseting the viewpoint of 10%, the callback function will be called
+//   entries.forEach(entry => {
+//     console.log(entry);
+//   });
+// };
+
+// const obsOptions = {
+//   root: null,
+//   // 10%
+//   threshold: 0.1,
+// };
+
+// const observer = new IntersectionObserver(obsCalback, obsOptions);
+// observer.observe(section1);
+
+const header_ = document.querySelector('.header');
+const navHeight = nav.getBoundingClientRect().height;
+
+const stickyNav = function (entries) {
+  const [entry] = entries;
+  //entry[0]
+  nav.classList.add('sticky');
+
+  if (!entry.isIntersecting) nav.classList.add('stick');
+  else nav.classList.remove('sticky');
+};
+const headerObserver = new IntersectionObserver(stickyNav, {
+  root: null,
+  threshold: 0,
+  // as if the margin was -90px higher, as the navigation bar is 90px
+  rootMargin: `-${navHeight}px`,
+});
+headerObserver.observe(header_);
+
+//////////////////////////////////////////////////////
+// Revealing Elements on Scroll
+
+//
