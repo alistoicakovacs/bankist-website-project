@@ -39,13 +39,13 @@ const allSections = document.querySelectorAll('.section');
 
 const allButtons = document.getElementsByTagName('button');
 
-// const message = document.createElement('div');
-// message.classList.add('cookie-message');
-// message.textContent =
-//   'We use cookies for improved functionality and analytics.';
-// message.innerHTML =
-//   'We use cookies for improved functionality and analytics. <button class ="btn btn--close-cookie">Got it!</button>';
-// header.append(message);
+const message = document.createElement('div');
+message.classList.add('cookie-message');
+message.textContent =
+  'We use cookies for improved functionality and analytics.';
+message.innerHTML =
+  'We use cookies for improved functionality and analytics. <button class ="btn btn--close-cookie">Got it!</button>';
+header.append(message);
 
 document
   .querySelector('.btn--close-cookie')
@@ -400,4 +400,27 @@ headerObserver.observe(header_);
 //////////////////////////////////////////////////////
 // Revealing Elements on Scroll
 
-//
+// Reveal sections
+// As we are scrolling down, we have to remove the section--hidden class from the sections
+
+// const allSections = document.querySelectorAll('.section'); - already selected
+
+const revealSection = function (entries, observer) {
+  const [entry] = entries;
+  console.log(entry);
+
+  if (!entry.isIntersecting) return;
+
+  entry.target.classList.remove('section--hidden');
+  observer.unobserver(entry.target);
+};
+
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: 0.15,
+});
+
+allSections.forEach(function (section) {
+  sectionObserver.observe(section);
+  section.classList.add('section--hidden');
+});
