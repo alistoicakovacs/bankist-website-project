@@ -39,28 +39,29 @@ const allSections = document.querySelectorAll('.section');
 
 const allButtons = document.getElementsByTagName('button');
 
-const message = document.createElement('div');
-message.classList.add('cookie-message');
-message.textContent =
-  'We use cookies for improved functionality and analytics.';
-message.innerHTML =
-  'We use cookies for improved functionality and analytics. <button class ="btn btn--close-cookie">Got it!</button>';
-header.append(message);
+// Creating a message saying that cookies are used
+// const message = document.createElement('div');
+// message.classList.add('cookie-message');
+// message.textContent =
+//   'We use cookies for improved functionality and analytics.';
+// message.innerHTML =
+//   'We use cookies for improved functionality and analytics. <button class ="btn btn--close-cookie">Got it!</button>';
+// header.append(message);
 
-document
-  .querySelector('.btn--close-cookie')
-  .addEventListener('click', function () {
-    //new way
-    // message.remove();
-    //old way
-    message.parentElement.removeChild(message);
-  });
+// document
+//   .querySelector('.btn--close-cookie')
+//   .addEventListener('click', function () {
+//     //new way
+//     // message.remove();
+//     //old way
+//     message.parentElement.removeChild(message);
+//   });
 
-message.style.backgroundColor = '#37383d';
-message.style.width = '120%';
+// message.style.backgroundColor = '#37383d';
+// message.style.width = '120%';
 
-message.style.height =
-  Number.parseFloat(getComputedStyle(message).height, 10) + 30 + 'px';
+// message.style.height =
+//   Number.parseFloat(getComputedStyle(message).height, 10) + 30 + 'px';
 
 // Attributes
 
@@ -457,8 +458,9 @@ imgTargets.forEach(img => imgObserver.observe(img));
 
 //////////////////////////////////////////
 // Building a Slider Component - Part 1
-const slider = function () {
+const sliderInit = function () {
   const slides = document.querySelectorAll('.slide');
+  const slider = document.querySelector('.slider');
   const btnLeft = document.querySelector('.slider__btn--left');
   const btnRight = document.querySelector('.slider__btn--right');
   const dotCotainer = document.querySelector('.dots');
@@ -531,7 +533,7 @@ const slider = function () {
   btnRight.addEventListener('click', nextSlide);
   btnLeft.addEventListener('click', prevSlide);
 
-  // KEYBOARD EVENTS
+  // Keyboard events
   document.addEventListener('keydown', function (e) {
     // console.log(e);
     if (e.key === 'ArrowLeft') prevSlide();
@@ -548,4 +550,23 @@ const slider = function () {
     }
   });
 };
-slider();
+sliderInit();
+
+////////////////////////////////////
+// Lifecycle DOM Events
+
+// document.addEventListener('DOMContentLoaded', function (e) {
+//   console.log('HTML parsed and DOM tree built!', e);
+// });
+
+// window.addEventListener('load', function (e) {
+//   console.log('Page fully loaded', e);
+// });
+
+// window.addEventListener('beforeunload', function (e) {
+//   e.preventDefault(); // needed for some browser in order for this to work
+//   e.returnValue = ''; // it does not matter what is written inbetween the string; This will fire a popup message asking if you are sure about closing the tab"
+// });
+
+/////////////////////////////////////
+// Efficient Script Loading: defer and async
