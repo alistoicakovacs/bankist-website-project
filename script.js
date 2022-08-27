@@ -103,19 +103,19 @@ const section1 = document.querySelector('#section--1');
 
 btnScrollTo.addEventListener('click', function (e) {
   const s1coords = section1.getBoundingClientRect();
-  console.log(s1coords);
+  // console.log(s1coords);
 
-  console.log(e.target.getBoundingClientRect());
+  // console.log(e.target.getBoundingClientRect());
 
   // this logs to the console the current scroll in pixels - the distance between current position and top of the page
-  console.log('Current scroll (x/y):', window.pageXOffset, window.pageYOffset);
+  // console.log('Current scroll (x/y):', window.pageXOffset, window.pageYOffset);
 
   // logs to the console the height and width of the viewport of the current proportion of the page
-  console.log(
-    'height/width viewport:',
-    document.documentElement.clientHeight,
-    document.documentElement.clientWidth
-  );
+  // console.log(
+  //   'height/width viewport:',
+  //   document.documentElement.clientHeight,
+  //   document.documentElement.clientWidth
+  // );
 
   // Scrolling
   // Global function available on the window object
@@ -407,12 +407,11 @@ headerObserver.observe(header_);
 
 const revealSection = function (entries, observer) {
   const [entry] = entries;
-  console.log(entry);
 
   if (!entry.isIntersecting) return;
 
   entry.target.classList.remove('section--hidden');
-  observer.unobserver(entry.target);
+  observer.unobserve(entry.target);
 };
 
 const sectionObserver = new IntersectionObserver(revealSection, {
@@ -422,5 +421,119 @@ const sectionObserver = new IntersectionObserver(revealSection, {
 
 allSections.forEach(function (section) {
   sectionObserver.observe(section);
-  section.classList.add('section--hidden');
+  // section.classList.add('section--hidden');
+});
+
+//////////////////////
+// Lazy loading images
+
+const imgTargets = document.querySelectorAll('img[data-src]');
+// console.log(imgTargets);
+
+const loadImg = function (entries, observer) {
+  const [entry] = entries;
+
+  if (!entry.isIntersecting) return;
+
+  // Replace src attribute with data-src
+
+  entry.target.src = entry.target.dataset.src;
+
+  entry.target.addEventListener('load', function () {
+    entry.target.classList.remove('lazy-img');
+  });
+
+  observer.unobserve(entry.target);
+};
+
+const imgObserver = new IntersectionObserver(loadImg, {
+  root: null,
+  threshold: 0,
+  // images load 200px before we reach them
+  rootMargin: '200px',
+});
+
+imgTargets.forEach(img => imgObserver.observe(img));
+
+//////////////////////////////////////////
+// Building a Slider Component - Part 1
+
+const slides = document.querySelectorAll('.slide');
+const slider = document.querySelector('.slider');
+const btnLeft = document.querySelector('.slider__btn--left');
+const btnRight = document.querySelector('.slider__btn--right');
+const dotCotainer = document.querySelector('.dots');
+
+let currSlide = 0;
+const maxSlide = slides.length;
+
+// Creating the dots
+const createDots = function () {
+  // the " _ " is a conventional of the throwaway variable
+  slides.forEach(function (_, i) {
+    dotCotainer.insertAdjacentHTML(
+      'beforeend',
+      `
+      <button class="dots__dot" data-slide="${i}"></button>
+    `
+    );
+  });
+};
+
+createDots();
+
+// Go to slide function
+const goToSlide = function (slide) {
+  slides.forEach(
+    (s, i) => (s.style.transform = `translateX(${100 * (i - currSlide)}%)`)
+  );
+};
+
+// slides.forEach(
+//   (slide, i) => (slide.style.transform = `translateX(${100 * i})`)
+// );
+// 0%, 100%, 200%, 300%
+// 1 image takes 100%
+
+goToSlide(0);
+
+// Next slide
+const nextSlide = function () {
+  if (currSlide === maxSlide - 1) {
+    currSlide = 0;
+  } else {
+    currSlide++;
+  }
+
+  goToSlide();
+};
+
+// Previous Slide
+const prevSlide = function () {
+  if (currSlide === 0) {
+    currSlide = maxSlide - 1;
+  } else {
+    currSlide--;
+  }
+
+  goToSlide(currSlide);
+};
+
+btnRight.addEventListener('click', nextSlide);
+btnLeft.addEventListener('click', prevSlide);
+
+// Keyboard events
+document.addEventListener('keydown', function (e) {
+  // console.log(e);
+  if (e.key === 'ArrowLeft') prevSlide();
+  // Short cirquiting
+  e.key === 'ArrowRight' && nextSlide();
+});
+
+// Event listener for the dots
+dotCotainer.addEventListener('click', function (e) {
+  if (e.target.classList.contains('dots__dot')) {
+    const { slide } = e.target.dataset;
+    goToSlide(slide);
+  }
 });
